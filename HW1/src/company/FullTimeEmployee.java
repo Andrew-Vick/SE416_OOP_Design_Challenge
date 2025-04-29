@@ -1,5 +1,7 @@
 package company;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,13 +13,25 @@ import java.util.List;
  */
 public class FullTimeEmployee extends Employee implements EmployeeBenefits {
     
-    private int commissionRate;
-    private List<Integer> valueOfSoldItems;
+	// Changed to final, to ensure its unmodifiable
+	private final int commissionRate;
+    private final List<Integer> valueOfSoldItems;
     
+    /**
+     * Constructs a FullTimeEmployee.
+     *
+     * @param name      the employee's name
+     * @param salary    the base salary
+     * @param rate      commission rate (percentage)
+     * @param itemsSold list of sold item values
+     */
     public FullTimeEmployee(String name, int salary, int rate, List<Integer> itemsSold) {
         super(name, salary);
+        if (rate < 0) {
+            throw new IllegalArgumentException("Commission rate must be non-negative.");
+        }
         this.commissionRate = rate;
-        this.valueOfSoldItems = itemsSold;
+        this.valueOfSoldItems = Collections.unmodifiableList(new ArrayList<>(itemsSold));
     }
 
     /**
@@ -29,9 +43,9 @@ public class FullTimeEmployee extends Employee implements EmployeeBenefits {
     @Override
     public int commission(List<Integer> valueItems) {
     	
-    	if(valueItems.isEmpty()) {
-    		return 0;
-    	}
+    	if (valueItems == null || valueItems.isEmpty() || commissionRate == 0) {
+            return 0;
+        }
     	
         int totalCommission = 0;
         for (int item : valueItems) {
@@ -47,6 +61,9 @@ public class FullTimeEmployee extends Employee implements EmployeeBenefits {
 
     @Override
     public int bonus(double performanceRating) {
+    	if (performanceRating < 0) {
+            throw new IllegalArgumentException("Performance rating must be non-negative.");
+        }
         return (int) (getSalary() * (performanceRating / 100));
     }
 

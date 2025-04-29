@@ -9,11 +9,26 @@ import java.util.List;
  */
 public interface EmployeeBenefits {
     
+	/**
+     * Calculates commission earned based on sold item values.
+     *
+     * @param valueItems list of item sale values
+     * @return total commission
+     */
     int commission(List<Integer> valueItems);
     
-    // Standard bonus calculation
+    /**
+     * Calculates the standard bonus.
+     *
+     * @return bonus amount
+     */
     int bonus();
 
-    // Overloaded bonus calculation with a performance rating
+    /**
+     * Calculates a bonus based on performance rating.
+     *
+     * @param performanceRating performance as a percentage
+     * @return bonus amount
+     */
     int bonus(double performanceRating);
 }
